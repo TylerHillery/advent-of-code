@@ -1,1 +1,13 @@
-**/**/*.txt
+# don't include real puzzle input file
+input.txt
+
+# python
+__pycache__
+.pytest_cache
+.venv
+.pytest_cache
+.mypy_cache
+.ruff_cache
+
+# typescript
+node_modules/

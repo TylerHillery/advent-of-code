@@ -1,5 +1,8 @@
-def part_1():
-    with open("day_01_puzzle_input.txt", "r") as f:
+from pathlib import Path
+
+
+def part_1(file: str):
+    with open(file, "r") as f:
         lines = f.read().splitlines()
 
     calibrations = []
@@ -10,7 +13,7 @@ def part_1():
     return sum(calibrations)
 
 
-def part_2():
+def part_2(file: str):
     NUM_WORDS = {
         "one": "1",
         "two": "2",
@@ -23,7 +26,7 @@ def part_2():
         "nine": "9",
     }
 
-    with open("day_01_puzzle_input.txt", "r") as f:
+    with open(file, "r") as f:
         lines = f.read().splitlines()
 
     calibrations = []
@@ -38,12 +41,15 @@ def part_2():
                 nums_in_lines[i] = line[i]
             i += 1
 
-        number_only_line = "".join([nums_in_lines[idx] for idx in sorted(nums_in_lines)])
+        number_only_line = "".join(
+            [nums_in_lines[idx] for idx in sorted(nums_in_lines)]
+        )
 
         calibrations.append(int(number_only_line[0] + number_only_line[-1]))
     return sum(calibrations)
 
 
 if __name__ == "__main__":
-    print("Answer to Part 1:", part_1())
-    print("Answer to Part 2:", part_2())
+    input_file = Path(__file__).parent.parent / "data" / "input.txt"
+    print("Answer to Part 1:", part_1(input_file))
+    print("Answer to Part 2:", part_2(input_file))

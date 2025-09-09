@@ -36,13 +36,13 @@ def part_2():
             for cube in cubes:
                 cube_color = cube.strip().split(" ")[1]
                 cube_qty = int(cube.strip().split(" ")[0])
-                if max_so_far.get(cube_color,0) < cube_qty:
+                if max_so_far.get(cube_color, 0) < cube_qty:
                     max_so_far[cube_color] = cube_qty
             game_set_num += 1
         power = 1
         for value in max_so_far.values():
             power *= value
-        sum_of_power += power 
+        sum_of_power += power
     return sum_of_power
 
 

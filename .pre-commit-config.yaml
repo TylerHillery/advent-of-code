@@ -1,0 +1,17 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: local
+    hooks:
+      - id: mise-format
+        name: Format all files
+        entry: mise run format
+        language: system
+        always_run: true
+        pass_filenames: false
+        stages: [pre-commit]

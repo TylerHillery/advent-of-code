@@ -1,0 +1,55 @@
+[tools]
+node = '24.6.0'
+
+[tasks."install:python"]
+description = "Ensure Python project virtualenv is up to date"
+run = "uv sync"
+
+[tasks."test:python"]
+description = "Run Python tests"
+run = "uv run -m pytest"
+
+[tasks."format:python"]
+description = "Run Python formatters"
+run = [
+    "uv run ruff check --select I --fix",
+    "uv run ruff format"
+]
+
+[tasks."check:python"]
+description = "Perform all Python checks"
+depends = ["format:python", "test:python"]
+
+# TypeScript tasks
+[tasks."install:typescript"]
+description = "Install TypeScript dependencies"
+run = "pnpm install"
+
+[tasks."test:typescript"]
+description = "Run TypeScript tests"
+run = "pnpm run test"
+
+[tasks."format:typescript"]
+description = "Run TypeScript formatters"
+run = "pnpm run format"
+
+[tasks."check:typescript"]
+description = "Perform all TypeScript checks"
+depends = ["format:typescript", "test:typescript"]
+
+# Aggregate tasks
+[tasks.install]
+description = "Install all dependencies"
+depends = ["install:python", "install:typescript"] 
+
+[tasks.test]
+description = "Run all tests"
+depends = ["test:*"] 
+
+[tasks.format]
+description = "Run all formatters"
+depends = ["format:*"] 
+
+[tasks.check]
+description = "Perform all checks"
+depends = ["check:*"]
