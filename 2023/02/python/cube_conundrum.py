@@ -1,9 +1,11 @@
-def part_1(bag: dict):
-    puzzle_input = "day_02_puzzle_input.txt"
-    with open(puzzle_input, "r") as f:
+def part_1(file: str):
+    bag = {"red": 12, "green": 13, "blue": 14}
+
+    with open(file, "r") as f:
         puzzle_contents = f.read().splitlines()
 
     possible_games = 0
+
     for line in puzzle_contents:
         game_num = int(line[: line.find(":")].split()[1])
         game_sets = line[line.find(":") + 1 :].split(";")
@@ -21,9 +23,8 @@ def part_1(bag: dict):
     return possible_games
 
 
-def part_2():
-    puzzle_input = "day_02_puzzle_input.txt"
-    with open(puzzle_input, "r") as f:
+def part_2(file: str):
+    with open(file, "r") as f:
         puzzle_contents = f.read().splitlines()
 
     sum_of_power = 0
@@ -47,6 +48,9 @@ def part_2():
 
 
 if __name__ == "__main__":
-    bag = {"red": 12, "green": 13, "blue": 14}
-    print("Answer to Part 1:", part_1(bag))
-    print("Answer to Part 2:", part_2())
+    puzzle_input = "day_02_puzzle_input.txt"
+    with open(puzzle_input, "r") as f:
+        puzzle_contents = f.read().splitlines()
+
+    print("Answer to Part 1:", part_1(puzzle_contents))
+    print("Answer to Part 2:", part_2(puzzle_contents))
