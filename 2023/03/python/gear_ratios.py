@@ -1,6 +1,8 @@
-def part_1():
-    puzzle_input = "day_03_puzzle_input.txt"
-    with open(puzzle_input, "r") as f:
+from pathlib import Path
+
+
+def part_1(input_file: str):
+    with open(input_file, "r") as f:
         puzzle_contents = f.read().splitlines()
 
     # loop through each line of the puzzle input
@@ -71,9 +73,8 @@ def part_1():
     return sum(part_numbers)
 
 
-def part_2():
-    puzzle_input = "day_03_puzzle_input.txt"
-    with open(puzzle_input, "r") as f:
+def part_2(input_file: str):
+    with open(input_file, "r") as f:
         puzzle_contents = f.read().splitlines()
 
     part_digits = {}
@@ -139,7 +140,6 @@ def part_2():
 
 
 if __name__ == "__main__":
-    print("The answer to Part 1:", part_1())
-    # first try: 527446
-    print("The answer to Part 2:", part_2())
-    # first try: 73201705
+    input_file = Path(__file__).parent.parent / "data" / "input.txt"
+    print("The answer to Part 1:", part_1(input_file))
+    print("The answer to Part 2:", part_2(input_file))
