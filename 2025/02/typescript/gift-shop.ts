@@ -80,6 +80,10 @@ export function part2(input: string) {
     return sum;
   }, 0);
   return sum;
+  // TODO: Above solution is correct but I looked up some more performance solutions
+  // 1. (s + s).slice(1, -1).inclues(s) turns out this can verify if a string has repeated pattern
+  // 2. /^(\d+)\1+$/.test(iStr) backreferences, although I feel regex in AoC is cheating.... lol
+  // 3. KMP = Knuth-Morris-Pratt Algorithm
 }
 
 const data = await readFile(
@@ -99,10 +103,8 @@ export function splitStrToEqualParts(
     throw new Error("Can't divide string into equal part lengths");
   }
   const strs: string[] = [];
-  let start = 0;
-  for (let i = partLength; i <= str.length; i += partLength) {
-    strs.push(str.slice(start, i));
-    start = i;
+  for (let i = 0; i <= str.length; i += partLength) {
+    strs.push(str.slice(i, i + partLength));
   }
   return strs;
 }
