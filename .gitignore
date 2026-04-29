@@ -11,3 +11,9 @@ __pycache__
 
 # typescript
 node_modules/
+
+# c
+test_runner
+main
+solution
+c/vendor/

@@ -103,7 +103,7 @@ export function splitStrToEqualParts(
     throw new Error("Can't divide string into equal part lengths");
   }
   const strs: string[] = [];
-  for (let i = 0; i <= str.length; i += partLength) {
+  for (let i = 0; i < str.length; i += partLength) {
     strs.push(str.slice(i, i + partLength));
   }
   return strs;

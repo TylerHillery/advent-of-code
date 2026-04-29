@@ -1,5 +1,5 @@
 [tools]
-node = '24.6.0'
+node = '24.13.0'
 
 [tasks."install:python"]
 description = "Ensure Python project virtualenv is up to date"
@@ -19,6 +19,43 @@ run = [
 [tasks."check:python"]
 description = "Perform all Python checks"
 depends = ["format:python", "test:python"]
+
+# C tasks
+[tasks."install:c"]
+description = "Download µnit unit testing library"
+run = '''
+mkdir -p c/vendor/munit
+curl -sL https://raw.githubusercontent.com/nemequ/munit/master/munit.h -o c/vendor/munit/munit.h
+curl -sL https://raw.githubusercontent.com/nemequ/munit/master/munit.c -o c/vendor/munit/munit.c
+'''
+
+[tasks."test:c"]
+description = "Compile and run C tests"
+run = '''
+find . -name 'c' -type d \
+  -not -path './.git/*' \
+  -not -path './node_modules/*' \
+  -not -path './c/vendor/*' | while read dir; do
+  if ls "$dir"/test_*.c 1>/dev/null 2>&1; then
+    src=$(find "$dir" -name '*.c' -not -name 'main.c')
+    gcc -Wall -Wextra -std=c23 -o "$dir/test_runner" $src c/vendor/munit/munit.c -I c/vendor/munit && "$dir/test_runner" --no-fork
+  fi
+done
+'''
+
+[tasks."format:c"]
+description = "Run clang-format on C source files"
+run = '''
+find . \( -name '*.c' -o -name '*.h' \) \
+  -not -path './.git/*' \
+  -not -path './node_modules/*' \
+  -not -path './c/vendor/*' \
+  | xargs clang-format -i
+'''
+
+[tasks."check:c"]
+description = "Perform all C checks"
+depends = ["format:c", "test:c"]
 
 # TypeScript tasks
 [tasks."install:typescript"]
@@ -40,15 +77,15 @@ depends = ["format:typescript", "test:typescript"]
 # Aggregate tasks
 [tasks.install]
 description = "Install all dependencies"
-depends = ["install:python", "install:typescript"] 
+depends = ["install:*"]
 
 [tasks.test]
 description = "Run all tests"
-depends = ["test:*"] 
+depends = ["test:*"]
 
 [tasks.format]
 description = "Run all formatters"
-depends = ["format:*"] 
+depends = ["format:*"]
 
 [tasks.check]
 description = "Perform all checks"
