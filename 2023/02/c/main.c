@@ -11,5 +11,6 @@ int main(void) {
     return 1;
   }
   printf("Part 1: %d\n", part_1(buffer));
+  printf("Part 2: %d\n", part_2(buffer));
   free(buffer);
 }

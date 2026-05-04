@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define MAX(a, b) ((a) > (b) ? (a) : (b))
+
 char *read_file(char *path);
 char *read_line(char *file, int offset);
 
@@ -81,6 +83,76 @@ int is_game_valid_part_1(char *game) {
   return atoi(game_id);
 }
 
+int part_2_game_min_power(char *game) {
+
+  // this assumes game id is < 1000 we can only store 999 need room for \0
+  char game_id[4];
+
+  // get game id
+  int i;
+  for (i = 5; game[i] != ':'; i++) {
+    game_id[i - 5] = game[i];
+  }
+
+  game_id[i - 5] = '\0';
+
+  // assumes we wont cube number greater than 999
+  char num_of_cubes_buffer[4];
+  // hold one for each max
+  int max_red_cubes = 0;
+  int max_blue_cubes = 0;
+  int max_green_cubes = 0;
+  // green is longest color string, which 5 + 1 for null termination
+  char cube_color_buffer[6];
+  // the i should have ended at the :, so we added two one account for space
+  // after
+  int offset = i + 2;
+
+  for (i = offset;; i++) {
+    if (strncmp(&game[i], ", ", 2) == 0 || (strncmp(&game[i], "; ", 2) == 0) ||
+        game[i] == '\0') {
+      // we know the offset + i should give us the color
+      strncpy(cube_color_buffer, &game[offset], i - offset);
+      cube_color_buffer[i - offset] = '\0';
+
+      int num_of_cubes = atoi(num_of_cubes_buffer);
+
+      if (strcmp(cube_color_buffer, "red") == 0) {
+        if (num_of_cubes > max_red_cubes) {
+          max_red_cubes = num_of_cubes;
+        }
+      } else if (strcmp(cube_color_buffer, "blue") == 0) {
+        if (num_of_cubes > max_blue_cubes) {
+          max_blue_cubes = num_of_cubes;
+        }
+      } else if (strcmp(cube_color_buffer, "green") == 0) {
+        if (num_of_cubes > max_green_cubes) {
+          max_green_cubes = num_of_cubes;
+        }
+      }
+
+      // last color in the last set
+      if (game[i] == '\0') {
+        break;
+      }
+
+      i += 2;
+      offset = i;
+
+    } else if (game[i] == ' ') {
+      // we know than the offset + i should give us the string number of cubes
+      // we really should check if the size is longer than buffer but ignoring
+      // for now
+      strncpy(num_of_cubes_buffer, &game[offset], i - offset);
+      num_of_cubes_buffer[i - offset] = '\0';
+      offset = i + 1;
+    }
+  }
+
+  return MAX(max_red_cubes, 1) * MAX(max_blue_cubes, 1) *
+         MAX(max_green_cubes, 1);
+}
+
 int part_1(char *buffer) {
 
   int file_length = strlen(buffer);
@@ -92,6 +164,24 @@ int part_1(char *buffer) {
     int line_length = strlen(line_buffer);
     current_length += line_length + 1;
     int game_id = is_game_valid_part_1(line_buffer);
+    free(line_buffer);
+    acc += game_id;
+  } while (current_length < file_length);
+
+  return acc;
+}
+
+int part_2(char *buffer) {
+
+  int file_length = strlen(buffer);
+  int current_length = 0;
+  int acc = 0;
+
+  do {
+    char *line_buffer = read_line(buffer, current_length);
+    int line_length = strlen(line_buffer);
+    current_length += line_length + 1;
+    int game_id = part_2_game_min_power(line_buffer);
     free(line_buffer);
     acc += game_id;
   } while (current_length < file_length);
