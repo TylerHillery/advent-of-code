@@ -38,7 +38,7 @@ find . -name 'c' -type d \
   -not -path './c/vendor/*' | while read dir; do
   if ls "$dir"/test_*.c 1>/dev/null 2>&1; then
     src=$(find "$dir" -name '*.c' -not -name 'main.c')
-    gcc -Wall -Wextra -std=c23 -o "$dir/test_runner" $src c/vendor/munit/munit.c -I c/vendor/munit && "$dir/test_runner" --no-fork
+    gcc -Wall -Wextra -std=c23 -o "$dir/test_runner" $src c/vendor/munit/munit.c -I c/vendor/munit && (cd "$dir" && ./test_runner --no-fork)
   fi
 done
 '''

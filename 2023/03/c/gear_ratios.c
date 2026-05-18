@@ -103,8 +103,6 @@ int part_1(char *path) {
     exit(EXIT_FAILURE);
   }
 
-  struct node *prev_node = NULL;
-
   while ((nread = getline(&line, &size, f)) != -1) {
 
     // we know this is the first line in loop when cols = 0;
@@ -211,8 +209,6 @@ int part_2(char *path) {
     perror("fopen");
     exit(EXIT_FAILURE);
   }
-
-  struct node *prev_node = NULL;
 
   while ((nread = getline(&line, &size, f)) != -1) {
 
